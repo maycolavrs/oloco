@@ -1,0 +1,163 @@
+<script>
+  let activeIndex = 0;
+
+  function setActive(index) {
+    activeIndex = index;
+  }
+
+  if (typeof window !== "undefined") {
+    import("https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js")
+      .catch(() => {
+        const script = document.createElement("script");
+        script.setAttribute("nomodule", "");
+        script.src = "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js";
+        document.head.appendChild(script);
+      });
+  }
+</script>
+
+<div class="navigation">
+  <ul>
+    {#each [0, 1, 2, 3] as i}
+      <li class:active={activeIndex === i}>
+        <a href="#" on:click={() => setActive(i)}>
+          <span class="icon">
+            <ion-icon
+              name="{i === 0 ? 'home-outline' : i === 1 ? 'person-outline' : i === 2 ? 'bag-outline' : 'settings-outline'}"
+            ></ion-icon>
+          </span>
+        </a>
+      </li>
+    {/each}
+    <div
+      class="indicator"
+      style="transform: translateX(calc(80px * {activeIndex} - 120px));"
+    >
+      <span></span>
+    </div>
+  </ul>
+</div>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --clr-background: #fce4e4; /* Vermelho claro */
+    --clr-primary: #c62828;    /* Vermelho escuro */
+    --clr-secondary: #ffccd2; /* Rosa claro (para ícones inativos) */
+    --clr-dark: #8e0000;       /* Vermelho intenso para o ícone ativo */
+    --clr-light: #ffffff;      /* Branco */
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    min-height: 100vh;
+    background: var(--clr-background);
+  }
+
+  .navigation {
+    width: 100%;
+    height: 80px;
+    background: var(--clr-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .navigation ul {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navigation ul li {
+    position: relative;
+    list-style: none;
+    width: 80px;
+    height: 80px;
+    z-index: 1;
+  }
+
+  .navigation ul li a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navigation ul li a .icon {
+    position: relative;
+    display: block;
+    font-size: 1.8em;
+    color: var(--clr-secondary); /* Rosa claro para ícones inativos */
+    line-height: 80px;
+    opacity: 0.75;
+    transition: 0.5s;
+  }
+
+  .navigation ul li.active a .icon {
+    opacity: 1;
+    color: var(--clr-dark); /* Ícone ativo em vermelho intenso */
+    transform: translateY(-10px);
+  }
+
+  .indicator {
+    position: absolute;
+    top: -15px;
+    transform: translateX(-120px);
+    width: 80px;
+    height: 80px;
+    background: var(--clr-background);
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border: 6px solid var(--clr-background);
+    cursor: pointer;
+    transition: 0.5s;
+  }
+
+  .indicator::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: -27px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-right-radius: 20px;
+    box-shadow: 4px -6px 0 2px var(--clr-background);
+  }
+
+  .indicator::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    right: -27px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-top-left-radius: 20px;
+    box-shadow: -4px -6px 0 2px var(--clr-background);
+  }
+
+  .indicator span {
+    position: absolute;
+    left: -2px;
+    width: 65px;
+    height: 65px;
+    border: 4px solid var(--clr-primary);
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    transform: scale(0.85);
+  }
+</style>
